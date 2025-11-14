@@ -1,0 +1,83 @@
+# where: blastengine_mailer/provider/provider.yaml
+# what: Registers blastengine mail tools and declares required credentials.
+# why: Dify needs this metadata to expose the transactional/bulk mail tools.
+
+identity:
+  author: r3-yamauchi
+  name: blastengine_mailer
+  label:
+    en_US: blastengine Mailer
+    ja_JP: blastengine メール送信
+    zh_Hans: blastengine 邮件发送
+  description:
+    en_US: Send transactional/bulk emails with attachments through blastengine
+    ja_JP: blastengine APIで添付メールを送信するDifyツールセット
+    zh_Hans: 通过 blastengine API 发送带附件的事务和批量邮件
+  icon: icon.svg
+tools:
+  - tools/send_transactional_email.yaml
+  - tools/send_bulk_email.yaml
+extra:
+  python:
+    source: provider/provider.py
+credentials_for_provider:
+  login_id:
+    help:
+      en_US: blastengine console login ID used for Bearer token generation
+      ja_JP: blastengine管理画面で使用しているログインID
+      zh_Hans: 用于生成Bearer令牌的blastengine登录ID
+    label:
+      en_US: Login ID
+      ja_JP: ログインID
+      zh_Hans: 登录ID
+    placeholder:
+      en_US: your_login_id
+      ja_JP: your_login_id
+      zh_Hans: your_login_id
+    required: true
+    type: secret-input
+  api_key:
+    help:
+      en_US: API key paired with the login ID
+      ja_JP: ログインIDに紐づくAPIキー
+      zh_Hans: 与登录ID配对的API密钥
+    label:
+      en_US: API Key
+      ja_JP: APIキー
+      zh_Hans: API密钥
+    placeholder:
+      en_US: Please enter your blastengine API key
+      ja_JP: blastengine APIキーを入力してください
+      zh_Hans: 请输入blastengine API密钥
+    required: true
+    type: secret-input
+  default_from_address:
+    help:
+      en_US: Optional default From email address for all sends
+      ja_JP: すべての送信で利用するデフォルトFromアドレス
+      zh_Hans: 所有发送的默认From邮箱
+    label:
+      en_US: Default From Address
+      ja_JP: デフォルトFromアドレス
+      zh_Hans: 默认From地址
+    placeholder:
+      en_US: no-reply@example.com
+      ja_JP: no-reply@example.com
+      zh_Hans: no-reply@example.com
+    required: false
+    type: text-input
+  default_from_name:
+    help:
+      en_US: Optional default display name for From header
+      ja_JP: Fromヘッダーのデフォルト表示名
+      zh_Hans: From头的默认显示名称
+    label:
+      en_US: Default From Name
+      ja_JP: デフォルトFrom名
+      zh_Hans: 默认From名称
+    placeholder:
+      en_US: Example Team
+      ja_JP: Example Team
+      zh_Hans: Example Team
+    required: false
+    type: text-input

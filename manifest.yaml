@@ -1,0 +1,37 @@
+version: 0.0.1
+type: plugin
+author: r3-yamauchi
+name: blastengine_mailer
+label:
+  en_US: blastengine Mailer
+  ja_JP: blastengine メール送信
+  zh_Hans: blastengine 邮件发送
+  pt_BR: Remetente blastengine
+description:
+  en_US: Send transactional and bulk emails with attachments through the blastengine API
+  ja_JP: blastengine APIを利用して添付ファイル付きのトランザクション/バルクメールを送信します
+  zh_Hans: 通过 blastengine API 发送带附件的事务和批量邮件
+  pt_BR: Envie e-mails transacionais e em massa com anexos pela API do blastengine
+icon: icon.svg
+resource:
+  memory: 268435456
+  permission:
+    tool:
+      enabled: true
+plugins:
+  tools:
+    - provider/provider.yaml
+meta:
+  version: 0.0.1
+  arch:
+    - amd64
+    - arm64
+  runner:
+    language: python
+    version: "3.12"
+    entrypoint: main
+  minimum_dify_version: 1.0.0
+created_at: 2025-11-13T00:00:00.000000000+09:00
+privacy: PRIVACY.md
+repo: https://github.com/r3-yamauchi/dify-blastengine-mailer-plugin
+verified: false
