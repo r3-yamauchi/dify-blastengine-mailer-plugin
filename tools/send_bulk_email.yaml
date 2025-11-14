@@ -1,0 +1,185 @@
+identity:
+  name: send_bulk_email
+  author: r3-yamauchi
+  label:
+    en_US: Send Bulk Email
+    ja_JP: バルクメール送信
+    zh_Hans: 发送批量邮件
+  icon: icon.svg
+description:
+  human:
+    en_US: Register a Blastengine bulk template, upload recipients, and trigger immediate or scheduled delivery.
+    ja_JP: Blastengineのバルクメールをテンプレート登録から宛先投入、送信/予約まで実行します。
+    zh_Hans: 在 Blastengine 中完成批量模板、收件人和发送流程。
+  llm: Orchestrate a Blastengine bulk delivery.
+parameters:
+  - name: subject
+    type: string
+    required: true
+    label:
+      en_US: Subject
+      ja_JP: 件名
+      zh_Hans: 主题
+    human_description:
+      en_US: Subject line for the bulk campaign.
+      ja_JP: バルク配信の件名。
+      zh_Hans: 批量活动的主题。
+    llm_description: Bulk email subject.
+    form: llm
+  - name: text_body
+    type: string
+    required: false
+    label:
+      en_US: Text Body
+      ja_JP: テキスト本文
+      zh_Hans: 文本正文
+    human_description:
+      en_US: Plain-text version of the campaign.
+      ja_JP: プレーンテキスト版の本文。
+      zh_Hans: 文本版内容。
+    llm_description: Plain-text content.
+    form: llm
+  - name: html_body
+    type: string
+    required: false
+    label:
+      en_US: HTML Body
+      ja_JP: HTML本文
+      zh_Hans: HTML正文
+    human_description:
+      en_US: HTML version of the campaign body.
+      ja_JP: HTML版の本文。
+      zh_Hans: HTML版内容。
+    llm_description: HTML content.
+    form: llm
+  - name: from_address
+    type: string
+    required: false
+    label:
+      en_US: From Address
+      ja_JP: Fromアドレス
+      zh_Hans: 发件人地址
+    human_description:
+      en_US: Override provider default From email.
+      ja_JP: プロバイダー既定のFromを上書き。
+      zh_Hans: 覆盖默认发件人邮箱。
+    llm_description: Override From email.
+    form: llm
+  - name: from_name
+    type: string
+    required: false
+    label:
+      en_US: From Name
+      ja_JP: From表示名
+      zh_Hans: 发件人名称
+    human_description:
+      en_US: Display name paired with the From address.
+      ja_JP: Fromアドレスの表示名。
+      zh_Hans: 与发件人地址匹配的名称。
+    llm_description: Display name for From header.
+    form: llm
+  - name: recipients
+    type: array
+    required: false
+    label:
+      en_US: Recipients (Array)
+      ja_JP: 宛先（配列指定）
+      zh_Hans: 收件人（数组）
+    human_description:
+      en_US: |
+        Recipient email addresses for direct input (max 50 per call).
+
+        **⚠️ Important**: Provide **either** this field **OR** "Recipients CSV" - not both.
+
+        **Input formats**:
+        - Array: `["user1@example.com", "user2@example.com", ...]`
+        - Comma-separated: `"user1@example.com, user2@example.com"`
+
+        **Examples**:
+        - Small list: `["alice@example.com", "bob@example.com"]`
+        - From variable: Use array variable from previous node
+      ja_JP: |
+        宛先メールアドレスを直接指定（1回最大50件）。
+
+        **⚠️ 重要**: 本フィールドと「宛先CSV」のどちらか一方のみを指定してください。
+
+        **入力形式**:
+        - 配列: `["user1@example.com", "user2@example.com", ...]`
+        - カンマ区切り: `"user1@example.com, user2@example.com"`
+
+        **入力例**:
+        - 少数の宛先: `["alice@example.com", "bob@example.com"]`
+        - 変数から: 前のノードの配列変数を使用
+      zh_Hans: 直接提供收件人邮箱（每次最多50个）。必须与收件人CSV二选一。
+    llm_description: Array of recipient email addresses (max 50). Either this or recipients_file required.
+    form: llm
+    input_schema:
+      type: array
+      items:
+        type: string
+  - name: recipients_file
+    type: file
+    required: false
+    label:
+      en_US: Recipients CSV (File)
+      ja_JP: 宛先CSV（ファイル指定）
+      zh_Hans: 收件人CSV（文件）
+    human_description:
+      en_US: |
+        CSV file containing recipient email addresses (one per line).
+
+        **⚠️ Important**: Provide **either** this field **OR** "Recipients (Array)" - not both.
+
+        **CSV format**:
+        ```
+        user1@example.com
+        user2@example.com
+        user3@example.com
+        ```
+
+        **Note**: Header row is optional. Empty lines and duplicates are automatically removed.
+      ja_JP: |
+        宛先メールアドレスを含むCSVファイル（1行に1件）。
+
+        **⚠️ 重要**: 本フィールドと「宛先（配列指定）」のどちらか一方のみを指定してください。
+
+        **CSV形式**:
+        ```
+        user1@example.com
+        user2@example.com
+        user3@example.com
+        ```
+
+        **注意**: ヘッダー行は任意です。空行と重複は自動的に除去されます。
+      zh_Hans: 单列表邮件地址的CSV；当`recipients`为空时必填。
+    llm_description: CSV file containing recipients (one email per line). Either this or recipients array required.
+    form: form
+  - name: schedule_at
+    type: string
+    required: false
+    label:
+      en_US: Schedule Time (ISO8601)
+      ja_JP: 予約時刻(ISO8601)
+      zh_Hans: 计划时间(ISO8601)
+    human_description:
+      en_US: Optional future timestamp for scheduled delivery. Leave blank for immediate send.
+      ja_JP: 未来時刻を指定すると予約送信。空欄で即時配信。
+      zh_Hans: 可选未来时间；留空立即发送。
+    llm_description: ISO8601 timestamp for scheduling.
+    form: llm
+  - name: attachments
+    type: files
+    required: false
+    label:
+      en_US: Attachments
+      ja_JP: 添付ファイル
+      zh_Hans: 附件
+    human_description:
+      en_US: Up to 10 files validated locally before upload.
+      ja_JP: 送信前にローカル検証される最大10件のファイル。
+      zh_Hans: 最多10个，发送前本地验证。
+    llm_description: Files attached to the bulk template.
+    form: form
+extra:
+  python:
+    source: tools/send_bulk_email.py

@@ -1,0 +1,233 @@
+identity:
+  name: send_transactional_email
+  author: r3-yamauchi
+  label:
+    en_US: Send Transactional Email
+    ja_JP: トランザクションメール送信
+    zh_Hans: 发送事务邮件
+  icon: icon.svg
+description:
+  human:
+    en_US: Send an immediate Blastengine transactional email with optional attachments, text/HTML bodies, and custom headers.
+    ja_JP: Blastengineのトランザクションメールを即時送信し、添付やテキスト/HTML本文、カスタムヘッダーを指定できます。
+    zh_Hans: 使用 Blastengine 立即发送带附件的事务邮件。
+  llm: Send an immediate transactional email through Blastengine.
+parameters:
+  - name: to
+    type: array
+    required: true
+    label:
+      en_US: Recipients (To)
+      ja_JP: 宛先 (To)
+      zh_Hans: 收件人 (To)
+    human_description:
+      en_US: |
+        Recipient email addresses (max 10 per call).
+
+        **Input formats**:
+        - Single email: `user@example.com`
+        - Multiple emails (array): `["user1@example.com", "user2@example.com"]`
+        - Comma-separated: `"user1@example.com, user2@example.com"`
+
+        **Examples**:
+        - Single: `"alice@example.com"`
+        - Multiple: `["bob@example.com", "charlie@example.com"]`
+      ja_JP: |
+        宛先メールアドレス（1回の呼び出しで最大10件）。
+
+        **入力形式**:
+        - 単一: `user@example.com`
+        - 配列: `["user1@example.com", "user2@example.com"]`
+        - カンマ区切り: `"user1@example.com, user2@example.com"`
+
+        **入力例**:
+        - 単一: `"alice@example.com"`
+        - 複数: `["bob@example.com", "charlie@example.com"]`
+      zh_Hans: 收件人邮箱列表（每次最多10个）。
+    llm_description: List of recipient email addresses (max 10). Accepts single email or array.
+    form: llm
+    input_schema:
+      type: array
+      items:
+        type: string
+  - name: subject
+    type: string
+    required: true
+    label:
+      en_US: Subject
+      ja_JP: 件名
+      zh_Hans: 主题
+    human_description:
+      en_US: Subject line of the email.
+      ja_JP: メール件名。
+      zh_Hans: 邮件主题。
+    llm_description: Subject line.
+    form: llm
+  - name: text_body
+    type: string
+    required: false
+    label:
+      en_US: Text Body
+      ja_JP: テキスト本文
+      zh_Hans: 文本正文
+    human_description:
+      en_US: Plain-text body. Provide at least text or HTML.
+      ja_JP: プレーンテキスト本文。テキストかHTMLのいずれかを必ず指定してください。
+      zh_Hans: 纯文本正文，需与HTML二选一提供。
+    llm_description: Plain-text content.
+    form: llm
+  - name: html_body
+    type: string
+    required: false
+    label:
+      en_US: HTML Body
+      ja_JP: HTML本文
+      zh_Hans: HTML正文
+    human_description:
+      en_US: Optional HTML version of the message body.
+      ja_JP: メッセージ本文のHTML版（任意）。
+      zh_Hans: 可选HTML版本。
+    llm_description: HTML content.
+    form: llm
+  - name: from_address
+    type: string
+    required: false
+    label:
+      en_US: From Address
+      ja_JP: Fromアドレス
+      zh_Hans: 发件人地址
+    human_description:
+      en_US: Override the provider default From email.
+      ja_JP: プロバイダー既定のFromアドレスを上書きします。
+      zh_Hans: 覆盖默认发件人邮箱。
+    llm_description: Override From email.
+    form: llm
+  - name: from_name
+    type: string
+    required: false
+    label:
+      en_US: From Name
+      ja_JP: From表示名
+      zh_Hans: 发件人名称
+    human_description:
+      en_US: Display name paired with the From address.
+      ja_JP: Fromアドレスに紐づく表示名。
+      zh_Hans: 与发件人地址配对的名称。
+    llm_description: Display name for From header.
+    form: llm
+  - name: cc
+    type: array
+    required: false
+    label:
+      en_US: CC (Carbon Copy)
+      ja_JP: CC（カーボンコピー）
+      zh_Hans: 抄送 (CC)
+    human_description:
+      en_US: |
+        Carbon copy recipients (max 10 per call). All recipients can see CC addresses.
+
+        **Input formats**:
+        - Single email: `user@example.com`
+        - Multiple emails (array): `["user1@example.com", "user2@example.com"]`
+        - Comma-separated: `"user1@example.com, user2@example.com"`
+
+        **Examples**:
+        - Single: `"manager@example.com"`
+        - Multiple: `["admin@example.com", "supervisor@example.com"]`
+      ja_JP: |
+        CC宛先（1回の呼び出しで最大10件）。すべての受信者がCCアドレスを確認できます。
+
+        **入力形式**:
+        - 単一: `user@example.com`
+        - 配列: `["user1@example.com", "user2@example.com"]`
+        - カンマ区切り: `"user1@example.com, user2@example.com"`
+
+        **入力例**:
+        - 単一: `"manager@example.com"`
+        - 複数: `["admin@example.com", "supervisor@example.com"]`
+      zh_Hans: 抄送收件人（每次最多10个）。所有收件人都可以看到抄送地址。
+    llm_description: List of CC email addresses (max 10). Accepts single email or array.
+    form: llm
+    input_schema:
+      type: array
+      items:
+        type: string
+  - name: bcc
+    type: array
+    required: false
+    label:
+      en_US: BCC (Blind Carbon Copy)
+      ja_JP: BCC（ブラインドカーボンコピー）
+      zh_Hans: 密送 (BCC)
+    human_description:
+      en_US: |
+        Blind carbon copy recipients (max 10 per call). BCC addresses are hidden from all recipients.
+
+        **Input formats**:
+        - Single email: `user@example.com`
+        - Multiple emails (array): `["user1@example.com", "user2@example.com"]`
+        - Comma-separated: `"user1@example.com, user2@example.com"`
+
+        **Examples**:
+        - Single: `"archive@example.com"`
+        - Multiple: `["audit@example.com", "backup@example.com"]`
+      ja_JP: |
+        BCC宛先（1回の呼び出しで最大10件）。BCCアドレスはすべての受信者から隠されます。
+
+        **入力形式**:
+        - 単一: `user@example.com`
+        - 配列: `["user1@example.com", "user2@example.com"]`
+        - カンマ区切り: `"user1@example.com, user2@example.com"`
+
+        **入力例**:
+        - 単一: `"archive@example.com"`
+        - 複数: `["audit@example.com", "backup@example.com"]`
+      zh_Hans: 密送收件人（每次最多10个）。密送地址对所有收件人隐藏。
+    llm_description: List of BCC email addresses (max 10). Accepts single email or array.
+    form: llm
+    input_schema:
+      type: array
+      items:
+        type: string
+  - name: reply_to
+    type: string
+    required: false
+    label:
+      en_US: Reply-To
+      ja_JP: Reply-To
+      zh_Hans: 回复至
+    human_description:
+      en_US: Optional reply-to email address.
+      ja_JP: 任意の返信先メールアドレス。
+      zh_Hans: 可选回复邮箱。
+    llm_description: Reply-to address.
+    form: llm
+  - name: custom_headers
+    type: object
+    required: false
+    label:
+      en_US: Custom Headers
+      ja_JP: カスタムヘッダー
+      zh_Hans: 自定义头
+    human_description:
+      en_US: Key/value JSON object for additional headers (e.g., X-Campaign-ID).
+      ja_JP: 追加ヘッダーを定義するキー/値のJSONオブジェクト。
+      zh_Hans: 用于额外头部的键/值JSON对象。
+    llm_description: JSON map of extra headers.
+    form: llm
+  - name: attachments
+    type: files
+    required: false
+    label:
+      en_US: Attachments
+      ja_JP: 添付ファイル
+      zh_Hans: 附件
+    human_description:
+      en_US: Up to 10 files. Disallowed extensions (.exe, .bat, .js, .vbs, .zip, .gz, .dll, .scr) or oversized files are rejected.
+      ja_JP: 最大10件。禁止拡張子（.exe, .bat, .js, .vbs, .zip, .gz, .dll, .scr）やサイズ超過のファイルは拒否されます。
+      zh_Hans: 最多10个文件，禁止扩展名或超大文件会被拒绝。
+    llm_description: Files to attach to the email.
+    form: form
+extra:
+  python:
+    source: tools/send_transactional_email.py
